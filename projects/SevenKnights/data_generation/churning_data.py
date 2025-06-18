@@ -8,15 +8,22 @@ from datetime import datetime, timedelta
 plt.rcParams['font.family'] = 'Malgun Gothic'
 plt.rcParams['axes.unicode_minus'] = False
 
-# 단계별 유저 수 생성
-stages = ['7-10', '7-20', '7-30', '8-10', '8-20', '8-30', '9-10', '9-20', '9-30', '10-10', '10-20', '10-30']
+# 단계별 유저 수 생성 (6-10부터 9-30까지)
+stages = ['6-10', '6-20', '6-30', '7-10', '7-20', '7-30', '8-10', '8-20', '8-30', '9-10', '9-20', '9-30']
 initial_users = 900000
 
 # 각 단계별 유저 수 계산
 users = [initial_users]
 for i in range(1, len(stages)):
-    if stages[i] in ['7-30', '8-30']:  # 특정 단계에서 큰 이탈률 적용
-        churn_rate = np.random.uniform(0.20, 0.30)
+    # 특정 단계에서 높은 이탈률 적용
+    if stages[i] == '6-20':  # 6-10에서 6-20으로 넘어갈 때
+        churn_rate = np.random.uniform(0.25, 0.30)
+    elif stages[i] == '7-20':  # 7-10에서 7-20으로 넘어갈 때
+        churn_rate = np.random.uniform(0.25, 0.30)
+    elif stages[i] == '8-20':  # 8-10에서 8-20으로 넘어갈 때
+        churn_rate = 0.07  # 7% 고정
+    elif stages[i] == '8-30':  # 8-20에서 8-30으로 넘어갈 때
+        churn_rate = 0.18  # 18% 고정
     else:  # 일반적인 이탈률 적용
         churn_rate = np.random.uniform(0.03, 0.07)
     
