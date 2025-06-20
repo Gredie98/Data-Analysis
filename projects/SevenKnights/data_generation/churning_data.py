@@ -3,6 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime, timedelta
+import json
+
+np.random.seed(42)
 
 # 한글 폰트 설정
 plt.rcParams['font.family'] = 'Malgun Gothic'
@@ -71,4 +74,14 @@ for i, v in enumerate(df['churn_rate'][1:]):
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.tight_layout()
 plt.savefig('churn_rate_visualization.png')
-plt.close() 
+plt.close()
+
+# 단계별 이탈/통과 유저 수 저장
+churn_info = {}
+for i in range(1, len(stages)):
+    churned = users[i-1] - users[i]
+    passed = users[i]
+    churn_info[stages[i]] = {'churned': int(churned), 'passed': int(passed)}
+
+with open('churn_user_counts.json', 'w', encoding='utf-8') as f:
+    json.dump(churn_info, f, ensure_ascii=False, indent=2) 
